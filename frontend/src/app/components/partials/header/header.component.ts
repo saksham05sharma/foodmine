@@ -22,7 +22,7 @@ export class HeaderComponent {
   }
 
   ngOnInit(): void {
-
+    console.log('isAuth value:', this.isAuth);
   }
 
   logout(){
@@ -30,6 +30,8 @@ export class HeaderComponent {
   }
 
   get isAuth(){
-    return this.user.token;
+    return !!this.user.token;
   }
+
+  
 }

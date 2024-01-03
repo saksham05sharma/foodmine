@@ -19,10 +19,15 @@ export class UserService {
     this.userObservable = this.userSubject.asObservable();
    }
 
+   public get currentUser():User{
+    return this.userSubject.value;
+  }
+
    login(userLogin:IUserLogin):Observable<User>{
     return this.http.post<User>(USER_LOGIN_URL, userLogin).pipe(
       tap({
         next: (user)=>{
+          console.log('Login Successful. User:', user);
           this.setUserToLocalStorage(user);
           this.userSubject.next(user);
           this.toastrService.success(
@@ -31,6 +36,7 @@ export class UserService {
           )
         },
         error: (errorResponse)=>{
+          console.error('Login Failed. Error:', errorResponse);
           this.toastrService.error(errorResponse.error, 'Login Failed');
         }
       })
@@ -45,7 +51,7 @@ export class UserService {
           this.userSubject.next(user);
           this.toastrService.success(
             `Welcome to the FoodMine ${user.name}`,
-            'Register Successfully'
+            'Registered Successfully'
           )
         },
         error: (errorResponse)=> {
